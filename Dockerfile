@@ -6,12 +6,10 @@
 # Go tests use this curl binary for integration tests.
 #
 
-FROM alpine:latest
+FROM alpine:edge as builder
 
-RUN apk add --no-cache \
-	ca-certificates \
-	nghttp2 \
-	openssl
+RUN apk upgrade && apk add --no-cache \
+	ca-certificates
 
 ENV CURL_VERSION 7.64.1
 
@@ -33,15 +31,29 @@ RUN set -x \
         	--enable-ipv6 \
         	--enable-unix-sockets \
         	--without-libidn \
-        	--disable-static \
         	--disable-ldap \
         	--with-pic \
+            --disable-shared \
     	&& make \
     	&& make install \
 	) \
     && rm -r curl-$CURL_VERSION \
     && rm -r /usr/share/man \
     && apk del .build-deps
+
+FROM alpine:edge
+
+COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
+
+RUN apk upgrade && apk add --no-cache \
+    ca-certificates \
+    nghttp2 \
+    openssl
+
+RUN addgroup -g 1000 curl \
+    && adduser -u 1000 -G curl -s /bin/sh -D curl
+
+USER curl
 
 ENTRYPOINT ["/usr/local/bin/curl"]
 CMD ["-h"]
