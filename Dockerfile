@@ -54,6 +54,7 @@ RUN addgroup -g 1000 curl \
     && adduser -u 1000 -G curl -s /bin/sh -D curl
 
 USER curl
+WORKDIR /home/curl
 
 ENTRYPOINT ["/usr/local/bin/curl"]
 CMD ["-h"]
