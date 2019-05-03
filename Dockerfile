@@ -48,10 +48,9 @@ COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
 RUN apk upgrade && apk add --no-cache \
     ca-certificates \
     nghttp2 \
-    openssl
-
-RUN addgroup -g 1000 curl \
-    && adduser -u 1000 -G curl -s /bin/sh -D curl
+    openssl \
+    && addgroup curl \
+    && adduser -G curl -s /bin/sh -D curl
 
 USER curl
 WORKDIR /home/curl
