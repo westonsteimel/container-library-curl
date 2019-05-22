@@ -11,7 +11,7 @@ FROM alpine:edge as builder
 RUN apk upgrade && apk add --no-cache \
 	ca-certificates
 
-ENV CURL_VERSION 7.64.1
+ENV CURL_VERSION 7.65.0
 
 RUN set -x \
     && apk add --no-cache --virtual .build-deps \
