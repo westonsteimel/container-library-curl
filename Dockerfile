@@ -8,12 +8,11 @@
 
 FROM alpine:edge as builder
 
-RUN apk upgrade && apk add --no-cache \
-	ca-certificates
-
 ENV CURL_VERSION 7.65.0
 
 RUN set -x \
+    && apk upgrade && apk add --no-cache \
+    ca-certificates \
     && apk add --no-cache --virtual .build-deps \
 		g++ \
 		make \
@@ -38,19 +37,22 @@ RUN set -x \
     	&& make install \
 	) \
     && rm -r curl-$CURL_VERSION \
-    && rm -r /usr/share/man \
-    && apk del .build-deps
-
-FROM alpine:edge
-
-COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
-
-RUN apk upgrade && apk add --no-cache \
-    ca-certificates \
+    && apk del .build-deps \
+    && apk add --no-cache \
     nghttp2 \
     openssl \
     && addgroup curl \
     && adduser -G curl -s /bin/sh -D curl
+
+FROM scratch 
+
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
+COPY --from=builder /usr/lib/libnghttp2.so.14 /usr/lib/libnghttp2.so.14
+COPY --from=builder /lib/libssl.so.1.1 /lib/libssl.so.1.1
+COPY --from=builder /lib/libcrypto.so.1.1 /lib/libcrypto.so.1.1
+COPY --from=builder /etc/ssl/certs /etc/ssl/certs
+COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
 
 USER curl
 WORKDIR /home/curl
