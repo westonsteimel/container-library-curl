@@ -8,7 +8,7 @@
 
 FROM alpine:edge as builder
 
-ENV CURL_VERSION 7.65.0
+ENV CURL_VERSION 7.65.1
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
