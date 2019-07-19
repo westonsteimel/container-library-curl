@@ -8,8 +8,8 @@
 
 FROM alpine:edge as builder
 
-LABEL version="7.65.2"
-ENV CURL_VERSION 7.65.2
+LABEL version="7.65.3"
+ENV CURL_VERSION 7.65.3
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
