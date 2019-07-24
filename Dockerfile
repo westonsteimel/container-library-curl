@@ -60,3 +60,7 @@ WORKDIR /home/curl
 
 ENTRYPOINT ["/usr/local/bin/curl"]
 CMD ["-h"]
+
+LABEL org.opencontainers.image.url="https://github.com/westonsteimel/docker-curl" \ 
+    org.opencontainers.image.source="https://github.com/westonsteimel/docker-curl" \
+    org.opencontainers.image.version="7.65.3"
