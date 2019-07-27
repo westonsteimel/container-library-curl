@@ -1,15 +1,9 @@
-#
-# This Dockerfile builds a recent curl with HTTP/2 client support, using
-# a recent nghttp2 build.
-#
-# See the Makefile for how to tag it. If Docker and that image is found, the
-# Go tests use this curl binary for integration tests.
-#
+ARG CURL_VERSION="7.65.3"
 
 FROM alpine:edge as builder
 
-LABEL version="7.65.3"
-ENV CURL_VERSION 7.65.3
+ARG CURL_VERSION
+ENV CURL_VERSION="${CURL_VERSION}"
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -47,6 +41,8 @@ RUN set -x \
 
 FROM scratch 
 
+ARG CURL_VERSION
+
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
 COPY --from=builder /usr/lib/libnghttp2.so.14 /usr/lib/libnghttp2.so.14
@@ -63,4 +59,4 @@ CMD ["-h"]
 
 LABEL org.opencontainers.image.url="https://github.com/westonsteimel/docker-curl" \ 
     org.opencontainers.image.source="https://github.com/westonsteimel/docker-curl" \
-    org.opencontainers.image.version="7.65.3"
+    org.opencontainers.image.version="${CURL_VERSION}"
