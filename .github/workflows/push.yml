@@ -1,0 +1,31 @@
+on: push
+name: Build and deploy on push
+jobs:
+  docker_build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Docker Build
+      uses: actions/docker/cli@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: build -t "${DOCKER_USERNAME}/curl:latest" .
+    - name: Docker Tag
+      uses: actions/docker/cli@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        entrypoint: ./tag.sh
+    - name: Login DockerHub
+      uses: actions/docker/login@master
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    - name: Docker Push
+      uses: actions/docker/cli@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: push "${DOCKER_USERNAME}/curl"
