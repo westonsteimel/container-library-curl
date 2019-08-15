@@ -1,8 +1,8 @@
 on: push
 name: Build and deploy on push
 jobs:
-  docker_build:
-    name: Docker Build
+  docker_build_stable:
+    name: Docker Build stable
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -11,13 +11,13 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       with:
-        args: build -t "${DOCKER_USERNAME}/curl:latest" .
+        args: build -t "${DOCKER_USERNAME}/curl:latest" stable
     - name: Docker Tag
       uses: actions/docker/cli@master
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       with:
-        entrypoint: ./tag.sh
+        entrypoint: ./stable/tag.sh
     - name: Login DockerHub
       uses: actions/docker/login@master
       env:
@@ -29,3 +29,26 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       with:
         args: push "${DOCKER_USERNAME}/curl"
+  docker_build_master:
+    name: Docker Build master
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Docker Build
+      uses: actions/docker/cli@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: build -t "${DOCKER_USERNAME}/curl:master" master
+    - name: Login DockerHub
+      uses: actions/docker/login@master
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    - name: Docker Push
+      uses: actions/docker/cli@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: push "${DOCKER_USERNAME}/curl"
+
