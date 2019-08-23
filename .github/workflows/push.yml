@@ -13,11 +13,11 @@ jobs:
       with:
         args: build -t "${DOCKER_USERNAME}/curl:latest" stable
     - name: Docker Tag
-      uses: actions/docker/cli@master
+      uses: actions/docker/tag@master
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       with:
-        entrypoint: ./stable/tag.sh
+        args: ${DOCKER_USERNAME}/curl ${DOCKER_USERNAME}/curl --no-ref --no-sha 
     - name: Login DockerHub
       uses: actions/docker/login@master
       env:
