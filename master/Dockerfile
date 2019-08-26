@@ -61,7 +61,7 @@ WORKDIR /home/curl
 ENTRYPOINT ["/usr/local/bin/curl"]
 CMD ["-h"]
 
-LABEL rg.opencontainers.image.title="curl" \
+LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
     org.opencontainers.image.url="https://github.com/westonsteimel/docker-curl" \ 
     org.opencontainers.image.source="https://github.com/westonsteimel/docker-curl" \
