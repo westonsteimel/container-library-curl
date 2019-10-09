@@ -65,4 +65,6 @@ LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
     org.opencontainers.image.url="https://github.com/westonsteimel/docker-curl" \ 
     org.opencontainers.image.source="https://github.com/westonsteimel/docker-curl" \
-    org.opencontainers.image.version="${CURL_VERSION}"
+    org.opencontainers.image.version="${CURL_VERSION}" \
+    version="${CURL_VERSION}"
+
