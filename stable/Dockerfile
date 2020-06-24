@@ -1,4 +1,4 @@
-ARG CURL_VERSION="7.70.0"
+ARG CURL_VERSION="7.71.0"
 
 FROM alpine:edge as builder
 
