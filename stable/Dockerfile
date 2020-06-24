@@ -11,14 +11,21 @@ RUN set -x \
     && apk add --no-cache --virtual .build-deps \
 		g++ \
 		make \
-		nghttp2-dev \
+		nghttp2-static \
+		openssl-libs-static \
 		openssl-dev \
-		perl \
-	&& wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.bz2 \
-    && tar xjvf curl-$CURL_VERSION.tar.bz2 \
-    && rm curl-$CURL_VERSION.tar.bz2 \
+        nghttp2-dev \
+        perl \
+        git \
+        automake \
+        autoconf \
+        build-base \
+        libtool \
+        upx \
+	&& git clone --depth 1 --branch "curl-${CURL_VERSION//./_}" https://github.com/curl/curl \
     && ( \
-		cd curl-$CURL_VERSION \
+		cd curl \
+        && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
         	--with-ssl \
@@ -28,10 +35,12 @@ RUN set -x \
         	--disable-ldap \
         	--with-pic \
             --disable-shared \
-    	&& make \
+    	&& make curl_LDFLAGS=-all-static \
     	&& make install \
 	) \
-    && rm -r curl-$CURL_VERSION \
+    && strip /usr/local/bin/curl \
+    && upx --lzma --best /usr/local/bin/curl \
+    && rm -r curl \
     && apk del .build-deps \
     && apk add --no-cache \
     nghttp2 \
@@ -44,10 +53,6 @@ FROM scratch
 ARG CURL_VERSION
 
 COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
-COPY --from=builder /usr/lib/libnghttp2.so.14 /usr/lib/libnghttp2.so.14
-COPY --from=builder /lib/libssl.so.1.1 /lib/libssl.so.1.1
-COPY --from=builder /lib/libcrypto.so.1.1 /lib/libcrypto.so.1.1
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
 
