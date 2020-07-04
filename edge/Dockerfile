@@ -1,7 +1,9 @@
-ARG CURL_VERSION="master"
+ARG GIT_TAG="master"
+ARG CURL_VERSION="edge"
 
 FROM alpine:edge as builder
 
+ARG GIT_TAG
 ARG CURL_VERSION
 ENV CURL_VERSION="${CURL_VERSION}"
 
@@ -22,7 +24,7 @@ RUN set -x \
         build-base \
         libtool \
         upx \
-	&& git clone --depth 1 --branch "${CURL_VERSION}" https://github.com/curl/curl \
+	&& git clone --depth 1 --branch "${GIT_TAG}" https://github.com/curl/curl \
     && ( \
 		cd curl \
         && autoreconf -i \
@@ -64,8 +66,6 @@ CMD ["-h"]
 
 LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
-    org.opencontainers.image.url="https://github.com/westonsteimel/docker-curl" \ 
-    org.opencontainers.image.source="https://github.com/westonsteimel/docker-curl" \
     org.opencontainers.image.version="${CURL_VERSION}" \
     version="${CURL_VERSION}"
 
