@@ -23,7 +23,6 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-        upx \
 	&& git clone --depth 1 --branch "${GIT_TAG}" https://github.com/curl/curl \
     && ( \
 		cd curl \
@@ -41,7 +40,7 @@ RUN set -x \
     	&& make install \
 	) \
     && strip /usr/local/bin/curl \
-    && upx --lzma --best /usr/local/bin/curl \
+    && if [$TARGETPLATFORM = "linux/amd64"]; then apk add --no-cache upx && upx --lzma --best /usr/local/bin/curl; fi \
     && rm -r curl \
     && apk del .build-deps \
     && apk add --no-cache \
