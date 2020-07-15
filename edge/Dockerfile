@@ -1,11 +1,13 @@
-ARG GIT_TAG="master"
-ARG CURL_VERSION="edge"
+ARG REVISION
+ARG CREATED
+ARG VERSION
+ARG GIT_REF="${VERSION}"
 
 FROM alpine:edge as builder
 
-ARG GIT_TAG
-ARG CURL_VERSION
-ENV CURL_VERSION="${CURL_VERSION}"
+ARG GIT_REF
+ARG VERSION
+ENV VERSION="${VERSION}"
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -23,7 +25,7 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& git clone --depth 1 --branch "${GIT_TAG}" https://github.com/curl/curl \
+	&& git clone --depth 1 --branch "${GIT_REF}" https://github.com/curl/curl \
     && ( \
 		cd curl \
         && autoreconf -i \
@@ -51,7 +53,10 @@ RUN set -x \
 
 FROM scratch 
 
-ARG CURL_VERSION
+ARG VERSION
+ARG SOURCE
+ARG REVISION
+ARG CREATED
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
@@ -65,6 +70,7 @@ CMD ["-h"]
 
 LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
-    org.opencontainers.image.version="${CURL_VERSION}" \
-    version="${CURL_VERSION}"
-
+    org.opencontainers.image.source="${SOURCE}" \
+    org.opencontainers.image.revision="${REVISION}" \
+    org.opencontainers.image.created="${CREATED}" \
+    org.opencontainers.image.version="${VERSION}"
