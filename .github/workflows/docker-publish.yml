@@ -15,7 +15,7 @@ jobs:
     name: stable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       -
         name: Set up Docker Buildx
         id: buildx
@@ -35,7 +35,7 @@ jobs:
     name: edge
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - 
         name: Set up Docker Buildx
         id: buildx
