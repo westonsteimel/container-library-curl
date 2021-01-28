@@ -3,7 +3,7 @@ ARG CREATED
 ARG VERSION
 ARG GIT_REF="${VERSION}"
 
-FROM alpine:edge as builder
+FROM alpine:latest as builder
 
 ARG GIT_REF
 ARG VERSION
