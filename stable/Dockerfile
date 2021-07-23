@@ -36,7 +36,10 @@ RUN set -x \
         	--disable-ldap \
         	--with-pic \
             --disable-shared \
-    	&& make curl_LDFLAGS=-all-static \
+    	    --enable-static \
+        && make -j4 V=1 LDFLAGS="-static -all-static" \
+        && make install \
+        && ldd /usr/local/bin/curl && exit 1 || true \
     	&& make install \
 	) \
     && strip /usr/local/bin/curl \
