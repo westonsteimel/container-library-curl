@@ -8,8 +8,9 @@ name: Build and publish to DockerHub
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_REGISTRY: 'docker.io'
-  DOCKER_REPOSITORY: 'curl'
+  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+  QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+  QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 jobs:
   stable:
     name: stable
@@ -52,7 +53,6 @@ jobs:
         run: |
           export DOCKER_BUILD_CONTEXT="edge"
           export DOCKER_IMAGE_VERSION="master"
-          export DATE_TAG=`date --utc --rfc-3339=date`
           export DOCKER_TAGS="edge"
           ./scripts/publish.sh
 

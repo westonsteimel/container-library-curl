@@ -1,5 +1,4 @@
 ARG REVISION
-ARG CREATED
 ARG VERSION
 ARG GIT_REF="${VERSION}"
 
@@ -58,7 +57,6 @@ FROM scratch
 ARG VERSION
 ARG SOURCE
 ARG REVISION
-ARG CREATED
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
@@ -74,5 +72,4 @@ LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
     org.opencontainers.image.source="${SOURCE}" \
     org.opencontainers.image.revision="${REVISION}" \
-    org.opencontainers.image.created="${CREATED}" \
     org.opencontainers.image.version="${VERSION}"
