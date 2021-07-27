@@ -54,6 +54,7 @@ if [[ -z "$DOCKER_IMAGE_VERSION" ]]; then
     exit 1
 fi
 
+export SOURCE="https://github.com/${GITHUB_REPOSITORY}"
 export REVISION="${GITHUB_SHA}"
 export VERSION="${DOCKER_IMAGE_VERSION}"
 
@@ -77,9 +78,9 @@ done
 
 created_date=`date --utc --rfc-3339=seconds`
 docker buildx build --platform "${platforms}" \
-    --build-arg SOURCE \
     --build-arg REVISION \
     --build-arg VERSION \
+    --label "org.opencontainers.image.source=${SOURCE}" \
     --label "org.opencontainers.image.created=${created_date}" \
     --output "type=image,push=true" \
     ${tag_command} \

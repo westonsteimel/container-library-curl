@@ -55,7 +55,6 @@ RUN set -x \
 FROM scratch 
 
 ARG VERSION
-ARG SOURCE
 ARG REVISION
 
 COPY --from=builder /etc/passwd /etc/passwd
@@ -70,6 +69,5 @@ CMD ["-h"]
 
 LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
-    org.opencontainers.image.source="${SOURCE}" \
     org.opencontainers.image.revision="${REVISION}" \
     org.opencontainers.image.version="${VERSION}"
