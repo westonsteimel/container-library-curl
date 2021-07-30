@@ -1,10 +1,9 @@
-ARG REVISION
-ARG VERSION
+ARG VERSION=""
+ARG REVISION=""
 
 FROM alpine:latest as builder
 
-ARG VERSION
-ENV VERSION="${VERSION}"
+ARG REVISION
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -22,7 +21,7 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& git clone --depth 1 --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
+	&& git clone --depth 1 --branch "${REVISION}" https://github.com/curl/curl \
     && ( \
 		cd curl \
         && autoreconf -i \
@@ -55,6 +54,9 @@ FROM scratch
 
 ARG VERSION
 ARG REVISION
+
+ENV CURL_VERSION="${VERSION}" \
+    CURL_REVISION="${REVISION}"
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
