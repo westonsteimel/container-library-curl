@@ -21,7 +21,8 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& git clone --depth 1 --branch "${REVISION}" https://github.com/curl/curl \
+	&& git clone --depth 1 --branch "${VERSION}" https://github.com/curl/curl \
+    && git reset --hard "${REVISION}" \
     && ( \
 		cd curl \
         && autoreconf -i \
