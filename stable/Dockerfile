@@ -3,6 +3,7 @@ ARG REVISION="bfbde883af33397943df68a3ae01847a634d33bf"
 
 FROM alpine:latest as builder
 
+ARG VERSION
 ARG REVISION
 
 RUN set -x \
@@ -21,10 +22,10 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& git clone --depth 1 --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
-    && git reset --hard "${REVISION}" \
+	&& git clone --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
     && ( \
 		cd curl \
+        && git reset --hard "${REVISION}" \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
