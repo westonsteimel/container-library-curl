@@ -29,10 +29,14 @@ jobs:
       - 
         name: Build and Publish stable docker images
         run: |
-          export DOCKER_BUILD_CONTEXT="stable"
-          export DOCKER_IMAGE_VERSION=`sed -ne "s/^ARG VERSION=['\"]\([^'\"]*\)['\"]/\1/p" stable/Dockerfile`
-          export DOCKER_TAGS="stable,latest,${DOCKER_IMAGE_VERSION}"
-          ./scripts/publish.sh
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            ./scripts/update-stable.sh
+            export DOCKER_BUILD_CONTEXT="stable"
+            export DOCKER_IMAGE_VERSION=`sed -ne "s/^ARG VERSION=['\"]\([^'\"]*\)['\"]/\1/p" stable/Dockerfile`
+            export DOCKER_TAGS="stable,latest,${DOCKER_IMAGE_VERSION}"
+            ./scripts/publish.sh
+            git push
   edge:
     name: edge
     runs-on: ubuntu-latest
@@ -50,8 +54,12 @@ jobs:
       - 
         name: Build and Publish edge docker images
         run: |
-          export DOCKER_BUILD_CONTEXT="edge"
-          export DOCKER_IMAGE_VERSION="master"
-          export DOCKER_TAGS="edge"
-          ./scripts/publish.sh
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            ./scripts/update-edge.sh
+            export DOCKER_BUILD_CONTEXT="edge"
+            export DOCKER_IMAGE_VERSION="master"
+            export DOCKER_TAGS="edge"
+            ./scripts/publish.sh
+            git push
 
