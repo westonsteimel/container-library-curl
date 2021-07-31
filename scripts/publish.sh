@@ -44,20 +44,12 @@ fi
 
 GITHUB_OWNER=$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)
 
-if [[ -z "$GITHUB_SHA" ]]; then
-    echo "Set the GITHUB_SHA environment variable."
-    exit 1
-fi
-
 if [[ -z "$DOCKER_IMAGE_VERSION" ]]; then
     echo "Set the DOCKER_IMAGE_VERSION environment variable."
     exit 1
 fi
 
 export SOURCE="https://github.com/${GITHUB_REPOSITORY}"
-export REVISION="${GITHUB_SHA}"
-export VERSION="${DOCKER_IMAGE_VERSION}"
-
 platforms="linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64"
 
 # Login to Docker Hub
@@ -78,8 +70,6 @@ done
 
 created_date=`date --utc --rfc-3339=seconds`
 docker buildx build --platform "${platforms}" \
-    --build-arg REVISION \
-    --build-arg VERSION \
     --label "org.opencontainers.image.source=${SOURCE}" \
     --label "org.opencontainers.image.created=${created_date}" \
     --output "type=image,push=true" \
