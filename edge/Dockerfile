@@ -1,5 +1,5 @@
 ARG VERSION="master"
-ARG REVISION="null"
+ARG REVISION="9153ba708be87ed6e7c25e1b4864f86fadeb95ad"
 
 FROM alpine:latest as builder
 
