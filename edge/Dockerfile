@@ -1,5 +1,5 @@
 ARG VERSION="master"
-ARG REVISION="46441955bfcce0c92e90e3e65b465df0c9577682"
+ARG REVISION="3736c0a209d929bcb1c9da909096e406c7d444b7"
 
 FROM ghcr.io/westonsteimel/rust-ffi:edge as rust-ffi 
 
