@@ -8,7 +8,7 @@ FROM alpine:latest as builder
 ARG VERSION
 ARG REVISION
 
-COPY --from=rustls-ffi /usr/local/lib/rustls-ffi /usr/local/lib/rustls-ffi
+COPY --from=rustls-ffi /usr/local/rustls-ffi/ /usr/local/
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -26,14 +26,15 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& git clone --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
+	&& ldconfig /usr/local/ \
+    && git clone --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
     && ( \
 		cd curl \
         && git reset --hard "${REVISION}" \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
-        	--with-rustls=/usr/local/lib/rustls-ffi \
+        	--with-rustls=/usr/local \
         	--enable-ipv6 \
         	--enable-unix-sockets \
         	--without-libidn \
