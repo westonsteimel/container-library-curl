@@ -1,10 +1,14 @@
 ARG VERSION="7.86.0"
 ARG REVISION="cd95ee9f771361acf241629d2fe5507e308082a2"
 
+FROM ghcr.io/westonsteimel/rustls-ffi:stable as rustls-ffi
+
 FROM alpine:latest as builder
 
 ARG VERSION
 ARG REVISION
+
+COPY --from=rustls-ffi /usr/local/lib/rustls-ffi /usr/local/lib/rustls-ffi
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -29,7 +33,7 @@ RUN set -x \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
-        	--with-ssl \
+        	--with-rustls=/usr/local/lib/rustls-ffi \
         	--enable-ipv6 \
         	--enable-unix-sockets \
         	--without-libidn \

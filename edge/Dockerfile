@@ -1,10 +1,14 @@
 ARG VERSION="master"
 ARG REVISION="46441955bfcce0c92e90e3e65b465df0c9577682"
 
+FROM ghcr.io/westonsteimel/rust-ffi:edge as rust-ffi 
+
 FROM alpine:latest as builder
 
 ARG VERSION
 ARG REVISION
+
+COPY --from=rust-ffi    /usr/local/lib/rust-ffi /usr/local/lib/rust-ffi
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -29,7 +33,7 @@ RUN set -x \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
-        	--with-ssl \
+        	--with-rustls=/usr/local/lib/rustls-ffi \
         	--enable-ipv6 \
         	--enable-unix-sockets \
         	--without-libidn \
