@@ -40,8 +40,7 @@ if [[ -z "$DOCKER_IMAGE_VERSION" ]]; then
 fi
 
 export SOURCE="https://github.com/${GITHUB_REPOSITORY}"
-#platforms="linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64"
-platforms="linux/amd64"
+platforms="linux/amd64,linux/arm64/v8"
 
 # Login to Docker Hub
 echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "docker.io"
