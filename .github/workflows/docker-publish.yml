@@ -37,10 +37,10 @@ jobs:
         uses: actions/checkout@main
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       - 
         name: Build and Publish stable docker images
         run: |
@@ -59,10 +59,10 @@ jobs:
         uses: actions/checkout@main
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       - 
         name: Build and Publish edge docker images
         run: |
