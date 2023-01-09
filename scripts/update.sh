@@ -2,8 +2,8 @@
 
 set -xeuo pipefail
 
-latest_stable_release=$(curl --silent "https://api.github.com/repos/curl/curl/releases/latest" | jq -e .tag_name | xargs)
-revision=$(curl --silent "https://api.github.com/repos/curl/curl/commits/${latest_stable_release}" | jq -e .sha | xargs)
+latest_stable_release=$(curl --silent "https://api.github.com/repos/curl/curl/releases/latest" | jq -er .tag_name)
+revision=$(curl --silent "https://api.github.com/repos/curl/curl/commits/${latest_stable_release}" | jq -er .sha)
 version=${latest_stable_release#"curl-"}
 version=${version//_/.}
 
@@ -18,7 +18,7 @@ git add stable/Dockerfile
 git diff-index --quiet HEAD || git commit --message "updated stable to version ${version}, revision ${revision}"
 
 version="master"
-revision=$(curl --silent "https://api.github.com/repos/curl/curl/commits/${version}" | jq -e .sha | xargs)
+revision=$(curl --silent "https://api.github.com/repos/curl/curl/commits/${version}" | jq -er .sha)
 echo "latest edge version: ${version}, revision: ${revision}"
 
 sed -ri \
