@@ -1,5 +1,5 @@
 ARG VERSION="master"
-ARG REVISION="a13ef31d0fbbf98120b711746bd8802acaba6b0a"
+ARG REVISION="aafb79de2a5a2c704b33e85c263148fb0a0fdea8"
 
 FROM ghcr.io/westonsteimel/rustls-ffi:edge as rustls-ffi 
 
