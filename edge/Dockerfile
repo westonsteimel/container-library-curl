@@ -9,6 +9,7 @@ ARG VERSION
 ARG REVISION
 
 COPY --from=rustls-ffi /usr/local/rustls-ffi/ /usr/local/
+COPY package-metadata.spec .
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -26,11 +27,12 @@ RUN set -x \
         autoconf \
         build-base \
         libtool \
-	&& ldconfig /usr/local/ \
+    && ldconfig /usr/local/ \
     && git clone --branch "${VERSION}" https://github.com/curl/curl \
     && ( \
 		cd curl \
         && git reset --hard "${REVISION}" \
+        && export CURL_VERSION=$(sed -n "s/^.*#define LIBCURL_VERSION\s\"\s*\(\S*\)\".*$/\1/p" include/curl/curlver.h) \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \
@@ -42,7 +44,7 @@ RUN set -x \
         	--with-pic \
             --disable-shared \
             --enable-static \
-        && make -j4 V=1 LDFLAGS="-static -all-static" \
+        && make -j4 V=1 LDFLAGS="-static -all-static -specs=/package-metadata.spec" \
     	&& make install \
         && ldd /usr/local/bin/curl && exit 1 || true \
 	) \
