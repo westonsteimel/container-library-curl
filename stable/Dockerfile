@@ -7,8 +7,10 @@ FROM alpine:latest as builder
 
 ARG VERSION
 ARG REVISION
+ENV CURL_VERSION="${VERSION}"
 
 COPY --from=rustls-ffi /usr/local/rustls-ffi/ /usr/local/
+COPY package-metadata.spec .
 
 RUN set -x \
     && apk upgrade && apk add --no-cache \
@@ -42,7 +44,7 @@ RUN set -x \
         	--with-pic \
             --disable-shared \
     	    --enable-static \
-        && make -j4 V=1 LDFLAGS="-static -all-static" \
+        && make -j4 V=1 LDFLAGS="-static -all-static -specs=/package-metadata.spec" \
         && make install \
         && ldd /usr/local/bin/curl && exit 1 || true \
 	) \
