@@ -32,6 +32,7 @@ RUN set -x \
     && ( \
 		cd curl \
         && git reset --hard "${REVISION}" \
+        && export ARCHITECTURE=$(arch) \
         && export CURL_VERSION=$(sed -n "s/^.*#define LIBCURL_VERSION\s\"\s*\(\S*\)\".*$/\1/p" include/curl/curlver.h) \
         && autoreconf -i \
     	&& ./configure \

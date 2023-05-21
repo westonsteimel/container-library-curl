@@ -33,6 +33,7 @@ RUN set -x \
     && ( \
 		cd curl \
         && git reset --hard "${REVISION}" \
+        && export ARCHITECTURE=$(arch) \
         && autoreconf -i \
     	&& ./configure \
     		--with-nghttp2=/usr \

@@ -1,2 +1,2 @@
 *link:
-+ --package-metadata={\"type\":\"static-binary\",\"name\":\"curl\",\"version\":\"%:getenv(CURL_VERSION \",\"sourceRepository\":\"https://github.com/curl/curl\",\"commit\":\"%:getenv(REVISION \",\"cpe\":\"cpe:2.3:a:haxx:curl:%:getenv(CURL_VERSION :*:*:*:*:*:*:*\"})))
++ --package-metadata={\"type\":\"static-binary\",\"name\":\"curl\",\"version\":\"%:getenv(CURL_VERSION \",\"architecture\":\"%:getenv(ARCHITECTURE \",\"sourceRepository\":\"https://github.com/curl/curl\",\"commit\":\"%:getenv(REVISION \",\"cpe\":\"cpe:2.3:a:haxx:curl:%:getenv(CURL_VERSION :*:*:*:*:*:%:getenv(ARCHITECTURE :*\"})))))
