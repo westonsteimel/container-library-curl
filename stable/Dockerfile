@@ -1,5 +1,5 @@
-ARG VERSION="8.0.1"
-ARG REVISION="b16d1fa8ee567b52c09a0f89940b07d8491b881d"
+ARG VERSION="8.1.0"
+ARG REVISION="a9f8fe28481fef7c28d85b4a12a3a35521408eaf"
 
 FROM ghcr.io/westonsteimel/rustls-ffi:stable as rustls-ffi
 
