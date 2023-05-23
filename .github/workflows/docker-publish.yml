@@ -45,7 +45,7 @@ jobs:
         name: Build and Publish stable docker images
         run: |
             export DOCKER_BUILD_CONTEXT="stable"
-            export DOCKER_IMAGE_VERSION=`sed -ne "s/^ARG VERSION=['\"]\([^'\"]*\)['\"]/\1/p" stable/Dockerfile`
+            export DOCKER_IMAGE_VERSION=`sed -ne "s/^ARG CURL_VERSION=['\"]\([^'\"]*\)['\"]/\1/p" stable/Dockerfile`
             export DOCKER_TAGS="stable,latest,${DOCKER_IMAGE_VERSION}"
             ./scripts/publish.sh
   edge:
@@ -67,7 +67,7 @@ jobs:
         name: Build and Publish edge docker images
         run: |
             export DOCKER_BUILD_CONTEXT="edge"
-            export DOCKER_IMAGE_VERSION="master"
+            export DOCKER_IMAGE_VERSION="edge"
             export DOCKER_TAGS="edge"
             ./scripts/publish.sh
 
