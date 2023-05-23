@@ -1,21 +1,24 @@
-ARG VERSION="8.1.0"
-ARG REVISION="a9f8fe28481fef7c28d85b4a12a3a35521408eaf"
+# The global build args need to all be prefixed with ARG for the update substitutions to work
+ARG CURL_REPOSITORY="https://github.com/curl/curl"
+ARG CURL_VERSION="8.1.1"
+ARG CURL_BRANCH="curl-8_1_1"
+ARG CURL_COMMIT="1561d0675208854b39066877b140780a965702fa"
 
 FROM ghcr.io/westonsteimel/rustls-ffi:stable as rustls-ffi
-
 FROM alpine:latest as builder
 
-ARG VERSION
-ARG REVISION
-ENV CURL_VERSION="${VERSION}"
+ARG CURL_REPOSITORY \
+    CURL_VERSION \
+    CURL_BRANCH \
+    CURL_COMMIT
+
+WORKDIR /build
 
 COPY --from=rustls-ffi /usr/local/rustls-ffi/ /usr/local/
-COPY package-metadata.spec .
+COPY package-metadata.spec /build/
 
-RUN set -x \
-    && apk upgrade && apk add --no-cache \
-    ca-certificates \
-    && apk add --no-cache --virtual .build-deps \
+RUN apk upgrade && apk add --no-cache \
+        ca-certificates \
 		g++ \
 		make \
 		nghttp2-static \
@@ -27,12 +30,14 @@ RUN set -x \
         automake \
         autoconf \
         build-base \
-        libtool \
-	&& ldconfig /usr/local/ \
-    && git clone --branch "curl-${VERSION//./_}" https://github.com/curl/curl \
+        libtool 
+
+RUN set -x \
+    ldconfig /usr/local/ \
+    && git clone --branch "${CURL_BRANCH}" "${CURL_REPOSITORY}" \
     && ( \
 		cd curl \
-        && git reset --hard "${REVISION}" \
+        && git reset --hard "${CURL_COMMIT}" \
         && export ARCHITECTURE=$(arch) \
         && autoreconf -i \
     	&& ./configure \
@@ -45,27 +50,27 @@ RUN set -x \
         	--with-pic \
             --disable-shared \
     	    --enable-static \
-        && make -j4 V=1 LDFLAGS="-static -all-static -specs=/package-metadata.spec" \
+        && make -j4 V=1 LDFLAGS="-static -all-static -specs=/build/package-metadata.spec" \
         && make install \
         && ldd /usr/local/bin/curl && exit 1 || true \
 	) \
     && strip /usr/local/bin/curl \
     && if [$TARGETPLATFORM = "linux/amd64"]; then apk add --no-cache upx && upx --lzma --best /usr/local/bin/curl; fi \
     && rm -r curl \
-    && apk del .build-deps \
-    && apk add --no-cache \
-    nghttp2 \
-    openssl \
     && addgroup curl \
     && adduser -G curl -s /bin/sh -D curl
 
 FROM scratch 
 
-ARG VERSION
-ARG REVISION
+ARG CURL_REPOSITORY \
+    CURL_VERSION \
+    CURL_BRANCH \
+    CURL_COMMIT
 
-ENV CURL_VERSION="${VERSION}" \
-    CURL_REVISION="${REVISION}"
+ENV CURL_REPOSITORY="${CURL_REPOSITORY}" \
+    CURL_VERSION="${CURL_VERSION}" \
+    CURL_BRANCH="${CURL_BRANCH}" \
+    CURL_COMMIT="${CURL_COMMIT}"
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
@@ -79,5 +84,5 @@ CMD ["-h"]
 
 LABEL org.opencontainers.image.title="curl" \
     org.opencontainers.image.description="curl in Docker" \ 
-    org.opencontainers.image.revision="${REVISION}" \
-    org.opencontainers.image.version="${VERSION}"
+    org.opencontainers.image.revision="${CURL_COMMIT}" \
+    org.opencontainers.image.version="${CURL_VERSION}"
