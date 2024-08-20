@@ -2,7 +2,7 @@
 ARG CURL_REPOSITORY="https://github.com/curl/curl"
 ARG CURL_VERSION="edge"
 ARG CURL_BRANCH="master"
-ARG CURL_COMMIT="77d722a052c427c89739b2e9e07aad9ae00837d2"
+ARG CURL_COMMIT="96b9027f1638428644f084eff9f2d8146d3911d6"
 
 FROM ghcr.io/westonsteimel/rustls-ffi:edge as rustls-ffi 
 FROM alpine:latest as builder
