@@ -1,8 +1,8 @@
 # The global build args need to all be prefixed with ARG for the update substitutions to work
 ARG CURL_REPOSITORY="https://github.com/curl/curl"
-ARG CURL_VERSION="8.11.0"
-ARG CURL_BRANCH="curl-8_11_0"
-ARG CURL_COMMIT="b1ef0e1a01c0bb6ee5367bd9c186a603bde3615a"
+ARG CURL_VERSION="8.11.1"
+ARG CURL_BRANCH="curl-8_11_1"
+ARG CURL_COMMIT="75a2079d5c28debb2eaa848ca9430f1fe0d7844c"
 
 FROM ghcr.io/westonsteimel/rustls-ffi:stable as rustls-ffi
 FROM alpine:latest as builder
