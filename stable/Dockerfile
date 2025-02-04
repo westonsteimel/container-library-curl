@@ -27,6 +27,8 @@ RUN apk upgrade && apk add --no-cache \
         libidn2-static \
         libpsl-dev \
         libpsl-static \
+        libunistring-dev \
+        libunistring-static \
         make \
 	    nghttp2-static \
 	    openssl-libs-static \
