@@ -20,6 +20,8 @@ COPY package-metadata.spec /build/
 RUN apk upgrade && apk add --no-cache \
         ca-certificates \
 		g++ \
+        libidn2-dev \
+        libidn2-static \
         libpsl-dev \
 		libpsl-static \
         make \

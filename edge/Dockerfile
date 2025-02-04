@@ -19,7 +19,9 @@ COPY package-metadata.spec /build/
 RUN apk upgrade && apk add --no-cache \
         ca-certificates \
 	    g++ \
-	    libpsl-dev \
+	    libidn2-dev \
+        libidn2-static \
+        libpsl-dev \
         libpsl-static \
         make \
 	    nghttp2-static \
