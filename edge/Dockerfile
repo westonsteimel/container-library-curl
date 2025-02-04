@@ -58,6 +58,9 @@ RUN set -x \
             --enable-unix-sockets \
             --enable-websockets \
             --enable-static \
+            --with-brotli=/usr \
+            --with-zstd=/usr \
+            --with-zlib=/usr \
             --with-nghttp2=/usr \
             --with-libidn2=/usr \
             --with-ca-bundle=/etc/ssl/cert.pem \
