@@ -4,8 +4,8 @@ ARG CURL_VERSION="edge"
 ARG CURL_BRANCH="master"
 ARG CURL_COMMIT="2ed232a4e66c7ecb75f1b7fc7623da967857ef04"
 
-FROM ghcr.io/westonsteimel/rustls-ffi:edge as rustls-ffi 
-FROM alpine:latest as builder
+FROM ghcr.io/westonsteimel/rustls-ffi:edge AS rustls-ffi 
+FROM alpine:latest AS builder
 
 ARG CURL_REPOSITORY \
     CURL_BRANCH \
