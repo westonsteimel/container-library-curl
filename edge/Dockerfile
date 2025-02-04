@@ -66,6 +66,7 @@ RUN set -x \
             --with-ca-bundle=/etc/ssl/cert.pem \
             --with-pic \
             --with-rustls=/usr/local \
+            --without-brotli \
             --without-openssl \
             --without-libssh2 \
             --disable-ldap \

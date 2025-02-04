@@ -58,7 +58,6 @@ RUN set -x \
             --enable-unix-sockets \
             --enable-websockets \
             --enable-static \
-            --with-brotli=/usr \
             --with-zstd=/usr \
             --with-zlib=/usr \
             --with-nghttp2=/usr \
@@ -68,6 +67,7 @@ RUN set -x \
             --with-rustls=/usr/local \
             --without-openssl \
             --without-libssh2 \
+            --without-brotli \
             --disable-ldap \
             --disable-shared \
         && make -j4 V=1 LDFLAGS="-static -all-static -specs=/build/package-metadata.spec" \
