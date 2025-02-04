@@ -17,8 +17,11 @@ COPY --from=rustls-ffi /usr/local/rustls-ffi/ /usr/local/
 COPY package-metadata.spec /build/
 
 RUN apk upgrade && apk add --no-cache \
+        brotli-dev \
+        brotli-static \
         ca-certificates \
-	    g++ \
+	    c-ares-dev \
+        g++ \
 	    libidn2-dev \
         libidn2-static \
         libpsl-dev \
@@ -33,7 +36,11 @@ RUN apk upgrade && apk add --no-cache \
         automake \
         autoconf \
         build-base \
-        libtool
+        libtool \
+        zlib-dev \
+        zlib-static \
+        zstd-dev \
+        zstd-static 
 
 RUN set -x \
     ldconfig /usr/local/ \
