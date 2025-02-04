@@ -53,7 +53,7 @@ RUN set -x \
         && export ARCHITECTURE=$(arch) \
         && export CURL_DEV_VERSION=$(sed -n "s/^.*#define LIBCURL_VERSION\s\"\s*\(\S*\)\".*$/\1/p" include/curl/curlver.h) \
         && autoreconf -i \
-    	&& .LDFLAGS="-static" PKG_CONFIG="pkg-config --static" ./configure \
+    	&& LDFLAGS="-static" PKG_CONFIG="pkg-config --static" ./configure \
             --enable-ipv6 \
             --enable-unix-sockets \
             --enable-websockets \
