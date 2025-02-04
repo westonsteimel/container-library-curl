@@ -51,7 +51,7 @@ RUN set -x \
         && git reset --hard "${CURL_COMMIT}" \
         && export ARCHITECTURE=$(arch) \
         && autoreconf -i \
-    	&& ./configure \
+    	&& LDFLAGS="-static" PKG_CONFIG="pkg-config --static" ./configure \
             --enable-ipv6 \
             --enable-unix-sockets \
             --enable-websockets \
