@@ -62,6 +62,7 @@ RUN set -x \
             --with-zlib=/usr \
             --with-nghttp2=/usr \
             --with-libidn2=/usr \
+            --with-libpsl=/usr \
             --with-ca-bundle=/etc/ssl/cert.pem \
             --with-pic \
             --with-rustls=/usr/local \
