@@ -20,7 +20,7 @@ COPY package-metadata.spec /build/
 RUN apk upgrade && apk add --no-cache \
         brotli-dev \
         brotli-static \
-        ca-certificates \
+        ca-certificates-bundle \
 	    c-ares-dev \
         g++ \
 	    libidn2-dev \
@@ -52,15 +52,19 @@ RUN set -x \
         && export ARCHITECTURE=$(arch) \
         && autoreconf -i \
     	&& ./configure \
-    		--with-nghttp2=/usr \
-        	--with-rustls=/usr/local \
-        	--enable-ipv6 \
-        	--enable-unix-sockets \
-        	--without-libidn \
-        	--disable-ldap \
-        	--with-pic \
+            --enable-ipv6 \
+            --enable-unix-sockets \
+            --enable-websockets \
+            --enable-static \
+            --with-nghttp2=/usr \
+            --with-libidn2=/usr \
+            --with-ca-bundle=/etc/ssl/cert.pem \
+            --with-pic \
+            --with-rustls=/usr/local \
+            --without-openssl \
+            --without-libssh2 \
+            --disable-ldap \
             --disable-shared \
-    	    --enable-static \
         && make -j4 V=1 LDFLAGS="-static -all-static -specs=/build/package-metadata.spec" \
         && make install \
         && ldd /usr/local/bin/curl && exit 1 || true \
