@@ -95,7 +95,7 @@ ENV CURL_REPOSITORY="${CURL_REPOSITORY}" \
     CURL_COMMIT="${CURL_COMMIT}"
 
 COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/ssl/certs /etc/ssl/certs
+COPY --from=builder /etc/ssl/cert.pem /etc/ssl/cert.pem
 COPY --from=builder /usr/local/bin/curl /usr/local/bin/curl
 
 USER curl
